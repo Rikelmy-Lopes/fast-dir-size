@@ -2,15 +2,19 @@ const fs = require('fs/promises');
 const { join } = require('path');
 
 const readDirectory = async (path, arrayOfFiles = []) => {
-  const files = await fs.readdir(path, { withFileTypes: true });
+  try {
+    const files = await fs.readdir(path, { withFileTypes: true })
 
-  await Promise.all(files.map(async (file) => {
-    if (file.isDirectory()) {
-      await readDirectory(join(path, file.name), arrayOfFiles);
-    } else {
-      arrayOfFiles.push(join(path, file.name));
-    }
-  }));
+    await Promise.all(files.map(async (file) => {
+      if (file.isDirectory()) {
+        await readDirectory(join(path, file.name), arrayOfFiles);
+      } else {
+        arrayOfFiles.push(join(path, file.name));
+      }
+    }));
+  } catch (error) {
+    console.log(error.message)
+  }
   
   return arrayOfFiles;
 };
@@ -23,7 +27,7 @@ const getSize = async (arrayOfFiles) => {
       const fileStats = await fs.stat(file);
       size += fileStats.size;
     } catch (error) {
-      return;
+      console.log(error.message)
     }
   }));
 
@@ -37,7 +41,7 @@ const getSize = async (arrayOfFiles) => {
  * @since v1.0.0
  */
 async function main(path) {
-  const arrayOfFiles = await readDir(path);
+  const arrayOfFiles = await readDirectory(path);
   return await getSize(arrayOfFiles);
 }
 
