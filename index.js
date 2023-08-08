@@ -40,7 +40,7 @@ const getSize = async (arrayOfFiles) => {
  * @returns {Promise<number>} - The total size in bytes.
  * @since v1.0.0
  */
-async function main(path) {
+const main = async (path) => {
   const arrayOfFiles = await readDirectory(path);
   return await getSize(arrayOfFiles);
 }
