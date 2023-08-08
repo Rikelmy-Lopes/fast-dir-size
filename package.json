@@ -1,6 +1,6 @@
 {
   "name": "fast-dir-size",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Get size (bytes) of a Directory!",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/Rikelmy-Lopes/dir-size.git"
+    "url": "git+ssh://git@github.com:Rikelmy-Lopes/fast-dir-size.git"
   },
   "keywords": [
     "folder",
@@ -19,7 +19,7 @@
   "author": "Rikelmy Lopes da Silva",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Rikelmy-Lopes/dir-size/issues"
+    "url": "https://github.com/Rikelmy-Lopes/fast-dir-size/issues"
   },
-  "homepage": "https://github.com/Rikelmy-Lopes/dir-size#readme"
+  "homepage": "https://github.com/Rikelmy-Lopes/fast-dir-size#readme"
 }
