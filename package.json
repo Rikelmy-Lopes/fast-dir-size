@@ -1,5 +1,5 @@
 {
-  "name": "dir-size",
+  "name": "fast-dir-size",
   "version": "1.0.0",
   "description": "Get size (bytes) of a Directory!",
   "main": "index.js",
