@@ -5,14 +5,16 @@ const getSize = require('./promises/index.js')
 const readDirectory = (path, arrayOfFiles = []) => {
     try {
       const files = fs.readdirSync(path, { withFileTypes: true })
-  
-       files.map((file) => {
-        if (file.isDirectory()) {
-           readDirectory(join(path, file.name), arrayOfFiles);
+      const len = files.length
+
+      for (let i = 0; i < len; i += 1) {
+        if (files[i].isDirectory()) {
+          readDirectory(join(path, files[i].name), arrayOfFiles);
         } else {
-          arrayOfFiles.push(join(path, file.name));
+          arrayOfFiles.push(join(path, files[i].name));
         }
-      });
+      }
+
     } catch (error) {
       console.log(error.message)
     }
@@ -22,15 +24,16 @@ const readDirectory = (path, arrayOfFiles = []) => {
   
   const calculateSize = (arrayOfFiles) => {
     let size = 0;
-  
-     arrayOfFiles.map( (file) => {
+    const len = arrayOfFiles.length;
+
+    for (let i = 0; i < len; i += 1) {
       try {
-        const fileStats = fs.statSync(file);
+        const fileStats = fs.statSync(arrayOfFiles[i]);
         size += fileStats.size;
       } catch (error) {
-        console.log(error.message)
+        console.log(error.message);
       }
-    });
+    }
   
     return size;
   };
