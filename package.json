@@ -1,7 +1,7 @@
 {
   "name": "fast-dir-size",
   "version": "1.1.0",
-  "description": "Get size (bytes) of a Directory!",
+  "description": "Calculates the total size of a folder and its subfolders.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
