@@ -23,14 +23,14 @@ const readDirectory = (path, arrayOfFiles = []) => {
   const calculateSize = (arrayOfFiles) => {
     let size = 0;
   
-     Promise.all(arrayOfFiles.map( (file) => {
+     arrayOfFiles.map( (file) => {
       try {
         const fileStats = fs.statSync(file);
         size += fileStats.size;
       } catch (error) {
         console.log(error.message)
       }
-    }));
+    });
   
     return size;
   };
