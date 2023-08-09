@@ -34,13 +34,17 @@ const calculateSize = async (arrayOfFiles) => {
   return size;
 };
 
-/**
- * Calculates the total size of a folder and its subfolders.
- * @param {string} path - The path to the folder.
- * @returns {Promise<number>} - The total size in bytes.
- * @since v1.0.0
- */
+  /**
+   * Calculates the total size of a folder and its subfolders.
+   * @param {string} path - The path to the folder.
+   * @returns {Promise<number>} - The total size in bytes.
+   * @throws {TypeError} - Throws an error if the provided path is not a string.
+   * @since v1.0.0
+   */
 const getSize = async (path) => {
+  if (typeof path !== 'string') {
+    throw new TypeError(`Path must be a string. Received: ${typeof path}`)
+  }
   const arrayOfFiles = await readDirectory(path);
   return await calculateSize(arrayOfFiles);
 }

@@ -39,9 +39,13 @@ const readDirectory = (path, arrayOfFiles = []) => {
    * Calculates the total size of a folder and its subfolders.
    * @param {string} path - The path to the folder.
    * @returns {number} - The total size in bytes.
+   * @throws {TypeError} - Throws an error if the provided path is not a string.
    * @since v1.0.0
    */
   const getSizeSync = (path) => {
+    if (typeof path !== 'string') {
+      throw new TypeError(`Path must be a string. Received: ${typeof path}`)
+    }
     const arrayOfFiles = readDirectory(path);
     return calculateSize(arrayOfFiles);
   }
