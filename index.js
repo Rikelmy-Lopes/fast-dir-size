@@ -2,16 +2,18 @@ const fs = require('fs');
 const { join } = require('path');
 const getSize = require('./promises/index.js')
 
-const readDirectory = (path, arrayOfFiles = []) => {
+const readDirectory = (path) => {
+  let size = 0
     try {
       const files = fs.readdirSync(path, { withFileTypes: true })
       const len = files.length
 
       for (let i = 0; i < len; i += 1) {
         if (files[i].isDirectory()) {
-          readDirectory(join(path, files[i].name), arrayOfFiles);
+          size += readDirectory(join(path, files[i].name));
         } else {
-          arrayOfFiles.push(join(path, files[i].name));
+          const fileStats = fs.statSync(join(path, files[i].name));
+          size += fileStats.size;
         }
       }
 
@@ -19,24 +21,24 @@ const readDirectory = (path, arrayOfFiles = []) => {
       console.log(error.message)
     }
     
-    return arrayOfFiles;
-  };
-  
-  const calculateSize = (arrayOfFiles) => {
-    let size = 0;
-    const len = arrayOfFiles.length;
-
-    for (let i = 0; i < len; i += 1) {
-      try {
-        const fileStats = fs.statSync(arrayOfFiles[i]);
-        size += fileStats.size;
-      } catch (error) {
-        console.log(error.message);
-      }
-    }
-  
     return size;
   };
+  
+  // const calculateSize = (arrayOfFiles) => {
+  //   let size = 0;
+  //   const len = arrayOfFiles.length;
+
+  //   for (let i = 0; i < len; i += 1) {
+  //     try {
+  //       const fileStats = fs.statSync(arrayOfFiles[i]);
+  //       size += fileStats.size;
+  //     } catch (error) {
+  //       console.log(error.message);
+  //     }
+  //   }
+  
+  //   return size;
+  // };
   
   /**
    * Calculates the total size of a folder and its subfolders.
@@ -50,7 +52,7 @@ const readDirectory = (path, arrayOfFiles = []) => {
       throw new TypeError(`Path must be a string. Received: ${typeof path}`)
     }
     const arrayOfFiles = readDirectory(path);
-    return calculateSize(arrayOfFiles);
+    return arrayOfFiles;
   }
   
   module.exports = {
