@@ -3,7 +3,7 @@ const { join } = require('path');
 
 const readDirectory = async (path, arrayOfFiles = []) => {
   try {
-    const files = await fs.readdir(path, { withFileTypes: true })
+    const files = await fs.readdir(path, { withFileTypes: true });
 
     await Promise.all(files.map(async (file) => {
       if (file.isDirectory()) {
@@ -13,7 +13,7 @@ const readDirectory = async (path, arrayOfFiles = []) => {
       }
     }));
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
   }
   
   return arrayOfFiles;
@@ -27,14 +27,14 @@ const calculateSize = async (arrayOfFiles) => {
       const fileStats = await fs.stat(file);
       size += fileStats.size;
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
   }));
 
   return size;
 };
 
-  /**
+/**
    * Calculates the total size of a folder and its subfolders.
    * @param {string} path - The path to the folder.
    * @returns {Promise<number>} - The total size in bytes.
@@ -43,10 +43,11 @@ const calculateSize = async (arrayOfFiles) => {
    */
 const getSize = async (path) => {
   if (typeof path !== 'string') {
-    throw new TypeError(`Path must be a string. Received: ${typeof path}`)
+    throw new TypeError(`Path must be a string. Received: ${typeof path}`);
   }
+
   const arrayOfFiles = await readDirectory(path);
   return await calculateSize(arrayOfFiles);
-}
+};
 
 module.exports = getSize;
