@@ -1,0 +1,15 @@
+Se a soma não está sendo calculada corretamente quando você utiliza o Promise.all, é importante investigar o problema com mais detalhes. Aqui estão algumas possíveis causas e soluções:
+
+Concorrência Assíncrona: Quando você usa o Promise.all com operações assíncronas, elas podem ocorrer em paralelo. Isso pode levar a problemas de concorrência se não estiverem sendo gerenciados corretamente. Certifique-se de que as funções calculateSize e getFileSize estão retornando valores corretos e que não há interferência nas variáveis de soma.
+
+Atualizações Assíncronas de Variáveis: Se você estiver atualizando a variável totalSize em múltiplas operações assíncronas sem o devido controle, isso pode causar inconsistências no cálculo. Certifique-se de que as atualizações da variável totalSize estão ocorrendo de forma segura e não estão sendo sobrescritas por várias operações assíncronas ao mesmo tempo.
+
+Problemas com as Funções Assíncronas: Verifique se as funções getEntries, calculateSize e getFileSize estão retornando os resultados corretos. Qualquer erro dentro dessas funções ou na lógica de resolução das promises pode levar a resultados incorretos.
+
+Possíveis Erros de Lógica: Verifique a lógica do cálculo de tamanho em relação a arquivos e diretórios. Pode haver um erro na diferenciação entre os dois tipos ou na lógica de acumulação.
+
+Debugging: Para entender melhor o que está acontecendo, você pode adicionar logs de depuração nas partes relevantes do código para monitorar os valores das variáveis e o fluxo de execução das operações assíncronas.
+
+Testes Incrementais: Se o problema persistir, tente simplificar o código e testá-lo com um conjunto menor de dados ou uma estrutura mais simples para isolar o problema.
+
+Se você puder fornecer mais detalhes específicos sobre como as somas estão incorretas ou partes específicas do código relacionadas a esse cálculo, posso ajudar a identificar a causa raiz do problema de forma mais precisa.

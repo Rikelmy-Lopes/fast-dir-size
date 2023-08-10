@@ -2,8 +2,13 @@ const fs = require('fs/promises');
 const { join } = require('path');
 
 const getFileSize = async (filePath) => {
-  const fileStats = await fs.stat(filePath);
-  return fileStats.size;
+  try {
+    const fileStats = await fs.stat(filePath);
+    return fileStats.size;
+  } catch (error) {
+    console.log(error.message);
+    return 0;
+  }
 };
 
 const getEntries = async (path) => {
@@ -11,32 +16,26 @@ const getEntries = async (path) => {
 };
 
 const calculateSize = async (path) => {
-  let size = 0;
+  let totalSize = 0;
   try {
     const entries = await getEntries(path);
 
-    await Promise.all(entries.map(async (entry) => {
-      if (entry.isDirectory()) {
-        size += await calculateSize(join(path, entry.name));
-      } else {
-        size += await getFileSize(join(path, entry.name));
-      }
+    const sizes = await Promise.all(entries.map(async (entry) => {
+      const entryPath = join(path, entry.name);
+      return entry.isDirectory() ? await calculateSize(entryPath) : await getFileSize(entryPath);
     }));
 
-    // for (const entry of entries) {
-    //   if (entry.isDirectory()) {
-    //     size += await calculateSize(join(path, entry.name));
-    //   } else {
-    //     size += await getFileSize(join(path, entry.name));
-    //   }
-    // }
+    totalSize = sizes.reduce((acc, size) => acc + size, 0);
+
 
   } catch (error) {
     console.log(error.message);
   }
 
-  return size;
+  return totalSize;
+
 };
+
 
 /**
    * Calculates the total size of a folder and its subfolders.
@@ -49,8 +48,8 @@ const getSize = async (path) => {
   if (typeof path !== 'string') {
     throw new TypeError(`Path must be a string. Received: ${typeof path}`);
   }
-  const size = await calculateSize(path);
-  return size;
+
+  return await calculateSize(path);
 };
 
 module.exports = getSize;

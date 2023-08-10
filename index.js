@@ -2,34 +2,40 @@ const fs = require('fs');
 const { join } = require('path');
 const getSize = require('./promises/index.js');
 
+const getFileSize = (filePath) => {
+  try {
+    const fileStats = fs.statSync(filePath);
+    return fileStats.size;
+  } catch (error) {
+    console.log(error.message);
+    return 0;
+  }
+};
+
+const getEntries = (path) => {
+  return fs.readdirSync(path, { withFileTypes: true });
+};
+
 const calculateSize = (path) => {
-  let size = 0;
+  let totalSize = 0;
   try {
     const entries = getEntries(path);
     const len = entries.length;
 
     for (let i = 0; i < len; i += 1) {
       if (entries[i].isDirectory()) {
-        size += calculateSize(join(path, entries[i].name));
+        totalSize += calculateSize(join(path, entries[i].name));
       } else {
-        size += getFileSize(join(path, entries[i].name));
+        totalSize += getFileSize(join(path, entries[i].name));
       }
     }
 
   } catch (error) {
     console.log(error.message);
+    return 0;
   }
     
-  return size;
-};
-
-const getFileSize = (filePath) => {
-  const fileStats = fs.statSync(filePath);
-  return fileStats.size;
-};
-
-const getEntries = (path) => {
-  return fs.readdirSync(path, { withFileTypes: true });
+  return totalSize;
 };
 
   
