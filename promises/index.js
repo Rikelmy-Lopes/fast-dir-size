@@ -1,35 +1,39 @@
 const fs = require('fs/promises');
 const { join } = require('path');
 
-const readDirectory = async (path, arrayOfFiles = []) => {
-  try {
-    const files = await fs.readdir(path, { withFileTypes: true });
+const getFileSize = async (filePath) => {
+  const fileStats = await fs.stat(filePath);
+  return fileStats.size;
+};
 
-    await Promise.all(files.map(async (file) => {
-      if (file.isDirectory()) {
-        await readDirectory(join(path, file.name), arrayOfFiles);
+const getEntries = async (path) => {
+  return await fs.readdir(path, { withFileTypes: true });
+};
+
+const calculateSize = async (path) => {
+  let size = 0;
+  try {
+    const entries = await getEntries(path);
+
+    await Promise.all(entries.map(async (entry) => {
+      if (entry.isDirectory()) {
+        size += await calculateSize(join(path, entry.name));
       } else {
-        arrayOfFiles.push(join(path, file.name));
+        size += await getFileSize(join(path, entry.name));
       }
     }));
+
+    // for (const entry of entries) {
+    //   if (entry.isDirectory()) {
+    //     size += await calculateSize(join(path, entry.name));
+    //   } else {
+    //     size += await getFileSize(join(path, entry.name));
+    //   }
+    // }
+
   } catch (error) {
     console.log(error.message);
   }
-  
-  return arrayOfFiles;
-};
-
-const calculateSize = async (arrayOfFiles) => {
-  let size = 0;
-
-  await Promise.all(arrayOfFiles.map(async (file) => {
-    try {
-      const fileStats = await fs.stat(file);
-      size += fileStats.size;
-    } catch (error) {
-      console.log(error.message);
-    }
-  }));
 
   return size;
 };
@@ -45,9 +49,8 @@ const getSize = async (path) => {
   if (typeof path !== 'string') {
     throw new TypeError(`Path must be a string. Received: ${typeof path}`);
   }
-
-  const arrayOfFiles = await readDirectory(path);
-  return await calculateSize(arrayOfFiles);
+  const size = await calculateSize(path);
+  return size;
 };
 
 module.exports = getSize;
