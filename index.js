@@ -23,11 +23,8 @@ const calculateSize = (path) => {
     const len = entries.length;
 
     for (let i = 0; i < len; i += 1) {
-      if (entries[i].isDirectory()) {
-        totalSize += calculateSize(join(path, entries[i].name));
-      } else {
-        totalSize += getFileSize(join(path, entries[i].name));
-      }
+      const entryPath = join(path, entries[i].name);
+      totalSize += entries[i].isDirectory() ? calculateSize(entryPath) : getFileSize(entryPath);
     }
 
   } catch (error) {
