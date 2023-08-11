@@ -1,6 +1,6 @@
 {
   "name": "fast-dir-size",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Calculates the total size of a folder and its subfolders.",
   "main": "test.js",
   "scripts": {
