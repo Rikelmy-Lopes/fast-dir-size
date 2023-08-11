@@ -21,14 +21,14 @@ const getEntries = async (path, callback) => {
   }
 };
 
-const calculateSize = async (path, callback) => {
+const calculateDirSize = async (path, callback) => {
   let totalSize = 0;
 
   const entries = await getEntries(path, callback);
 
   const sizes = await Promise.all(entries.map(async (entry) => {
     const entryPath = join(path, entry.name);
-    return entry.isDirectory() ? await calculateSize(entryPath, callback) : await getFileSize(entryPath, callback);
+    return entry.isDirectory() ? await calculateDirSize(entryPath, callback) : await getFileSize(entryPath, callback);
   }));
 
   totalSize = sizes.reduce((acc, size) => acc + size, 0);
@@ -45,12 +45,12 @@ const calculateSize = async (path, callback) => {
    * @throws {TypeError} - Throws an error if the provided path is not a string.
    * @since v1.0.0
    */
-const getSize = async (path, callback) => {
+const dirSize = async (path, callback) => {
   if (typeof path !== 'string') {
     throw new TypeError(`Path must be a string. Received: ${typeof path}`);
   }
 
-  return await calculateSize(path, callback);
+  return await calculateDirSize(path, callback);
 };
 
-module.exports = getSize;
+module.exports = dirSize;

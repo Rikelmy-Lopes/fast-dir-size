@@ -1,6 +1,6 @@
 const fs = require('fs');
 const { join } = require('path');
-const getSize = require('./promises/index.js');
+const dirSize = require('./promises/index.js');
 
 const getFileSize = (filePath, callback) => {
   try {
@@ -21,14 +21,14 @@ const getEntries = (path, callback) => {
   }
 };
 
-const calculateSize = (path, callback) => {
+const calculateDirSize = (path, callback) => {
   let totalSize = 0;
   const entries = getEntries(path, callback);
   const len = entries.length;
 
   for (let i = 0; i < len; i += 1) {
     const entryPath = join(path, entries[i].name);
-    totalSize += entries[i].isDirectory() ? calculateSize(entryPath, callback) : getFileSize(entryPath, callback);
+    totalSize += entries[i].isDirectory() ? calculateDirSize(entryPath, callback) : getFileSize(entryPath, callback);
   }
     
   return totalSize;
@@ -44,15 +44,15 @@ const calculateSize = (path, callback) => {
    * @throws {TypeError} - Throws an error if the provided path is not a string.
    * @since v1.0.0
    */
-const getSizeSync = (path, callback) => {
+const dirSizeSync = (path, callback) => {
   if (typeof path !== 'string') {
     throw new TypeError(`Path must be a string. Received: ${typeof path}`);
   }
 
-  return calculateSize(path, callback);
+  return calculateDirSize(path, callback);
 };
   
 module.exports = {
-  getSize,
-  getSizeSync
+  dirSize,
+  dirSizeSync
 };
