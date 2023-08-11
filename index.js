@@ -1,6 +1,6 @@
 const { statSync, readdirSync } = require('fs');
 const { join } = require('path');
-const dirSize = require('./promises/index.js');
+const getDirSize = require('./promises/index.js');
 
 const getFileSize = (filePath, callback) => {
   try {
@@ -12,23 +12,23 @@ const getFileSize = (filePath, callback) => {
   }
 };
 
-const getEntries = (path, callback) => {
+const getDirEntries = (dirPath, callback) => {
   try {
-    return readdirSync(path, { withFileTypes: true });
+    return readdirSync(dirPath, { withFileTypes: true });
   } catch (error) {
     typeof callback === 'function' && callback(error);
     return [];
   }
 };
 
-const calculateDirSize = (path, callback) => {
+const calculateTotalDirSize = (dirPath, callback) => {
   let totalSize = 0;
-  const entries = getEntries(path, callback);
+  const entries = getDirEntries(dirPath, callback);
   const len = entries.length;
 
   for (let i = 0; i < len; i += 1) {
-    const entryPath = join(path, entries[i].name);
-    totalSize += entries[i].isDirectory() ? calculateDirSize(entryPath, callback) : getFileSize(entryPath, callback);
+    const entryPath = join(dirPath, entries[i].name);
+    totalSize += entries[i].isDirectory() ? calculateTotalDirSize(entryPath, callback) : getFileSize(entryPath, callback);
   }
     
   return totalSize;
@@ -38,21 +38,21 @@ const calculateDirSize = (path, callback) => {
   
 /**
    * Calculates the total size of a folder and its subfolders.
-   * @param {string} path - The path to the folder.
+   * @param {string} dirPath - The path to the folder.
    * @param {function(Error): void=} callback - A callback function that handles potential errors during the folder size calculation.
    * @returns {number} - The total size in bytes.
    * @throws {TypeError} - Throws an error if the provided path is not a string.
    * @since v1.0.0
    */
-const dirSizeSync = (path, callback) => {
-  if (typeof path !== 'string') {
-    throw new TypeError(`Path must be a string. Received: ${typeof path}`);
+const getDirSizeSync = (dirPath, callback) => {
+  if (typeof dirPath !== 'string') {
+    throw new TypeError(`Path must be a string. Received: ${typeof dirPath}`);
   }
 
-  return calculateDirSize(path, callback);
+  return calculateTotalDirSize(dirPath, callback);
 };
   
 module.exports = {
-  dirSize,
-  dirSizeSync
+  getDirSize,
+  getDirSizeSync
 };

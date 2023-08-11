@@ -11,9 +11,9 @@ const getFileSize = async (filePath, callback) => {
   }
 };
 
-const getEntries = async (path, callback) => {
+const getDirEntries = async (dirPath, callback) => {
   try {
-    const entries = await readdir(path, { withFileTypes: true });
+    const entries = await readdir(dirPath, { withFileTypes: true });
     return entries;
   } catch (error) {
     typeof callback === 'function' && callback(error);
@@ -21,14 +21,14 @@ const getEntries = async (path, callback) => {
   }
 };
 
-const calculateDirSize = async (path, callback) => {
+const calculateTotalDirSize = async (dirPath, callback) => {
   let totalSize = 0;
 
-  const entries = await getEntries(path, callback);
+  const entries = await getDirEntries(dirPath, callback);
 
   const sizes = await Promise.all(entries.map(async (entry) => {
-    const entryPath = join(path, entry.name);
-    return entry.isDirectory() ? await calculateDirSize(entryPath, callback) : await getFileSize(entryPath, callback);
+    const entryPath = join(dirPath, entry.name);
+    return entry.isDirectory() ? await calculateTotalDirSize(entryPath, callback) : await getFileSize(entryPath, callback);
   }));
 
   totalSize = sizes.reduce((acc, size) => acc + size, 0);
@@ -39,18 +39,18 @@ const calculateDirSize = async (path, callback) => {
 
 /**
    * Calculates the total size of a folder and its subfolders.
-   * @param {string} path - The path to the folder.
+   * @param {string} dirPath - The path to the folder.
    * @param {function(Error): void=} callback - A callback function that handles potential errors during the folder size calculation.
    * @returns {Promise<number>} - The total size in bytes.
    * @throws {TypeError} - Throws an error if the provided path is not a string.
    * @since v1.0.0
    */
-const dirSize = async (path, callback) => {
-  if (typeof path !== 'string') {
-    throw new TypeError(`Path must be a string. Received: ${typeof path}`);
+const getDirSize = async (dirPath, callback) => {
+  if (typeof dirPath !== 'string') {
+    throw new TypeError(`Path must be a string. Received: ${typeof dirPath}`);
   }
 
-  return await calculateDirSize(path, callback);
+  return await calculateTotalDirSize(dirPath, callback);
 };
 
-module.exports = dirSize;
+module.exports = getDirSize;
