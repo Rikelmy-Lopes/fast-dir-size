@@ -1,10 +1,10 @@
-const fs = require('fs');
+const { statSync, readdirSync } = require('fs');
 const { join } = require('path');
 const dirSize = require('./promises/index.js');
 
 const getFileSize = (filePath, callback) => {
   try {
-    const fileStats = fs.statSync(filePath);
+    const fileStats = statSync(filePath);
     return fileStats.size;
   } catch (error) {
     typeof callback === 'function' && callback(error);
@@ -14,7 +14,7 @@ const getFileSize = (filePath, callback) => {
 
 const getEntries = (path, callback) => {
   try {
-    return fs.readdirSync(path, { withFileTypes: true });
+    return readdirSync(path, { withFileTypes: true });
   } catch (error) {
     typeof callback === 'function' && callback(error);
     return [];

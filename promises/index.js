@@ -1,9 +1,9 @@
-const fs = require('fs/promises');
+const { stat, readdir } = require('fs/promises');
 const { join } = require('path');
 
 const getFileSize = async (filePath, callback) => {
   try {
-    const fileStats = await fs.stat(filePath);
+    const fileStats = await stat(filePath);
     return fileStats.size;
   } catch (error) {
     typeof callback === 'function' && callback(error);
@@ -13,7 +13,7 @@ const getFileSize = async (filePath, callback) => {
 
 const getEntries = async (path, callback) => {
   try {
-    const entries = await fs.readdir(path, { withFileTypes: true });
+    const entries = await readdir(path, { withFileTypes: true });
     return entries;
   } catch (error) {
     typeof callback === 'function' && callback(error);
