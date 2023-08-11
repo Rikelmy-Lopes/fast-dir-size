@@ -12,31 +12,27 @@ const getFileSize = (filePath, callback) => {
   }
 };
 
-const getEntries = (path) => {
-  return fs.readdirSync(path, { withFileTypes: true });
+const getEntries = (path, callback) => {
+  try {
+    return fs.readdirSync(path, { withFileTypes: true });
+  } catch (error) {
+    typeof callback === 'function' && callback(error);
+    return [];
+  }
 };
 
 const calculateSize = (path, callback) => {
   let totalSize = 0;
-  try {
-    const entries = getEntries(path);
-    const len = entries.length;
+  const entries = getEntries(path, callback);
+  const len = entries.length;
 
-    for (let i = 0; i < len; i += 1) {
-      const entryPath = join(path, entries[i].name);
-      totalSize += entries[i].isDirectory() ? calculateSize(entryPath, callback) : getFileSize(entryPath, callback);
-    }
-
-  } catch (error) {
-    typeof callback === 'function' && callback(error);
-    return 0;
+  for (let i = 0; i < len; i += 1) {
+    const entryPath = join(path, entries[i].name);
+    totalSize += entries[i].isDirectory() ? calculateSize(entryPath, callback) : getFileSize(entryPath, callback);
   }
     
   return totalSize;
-  
 };
-
-
 
 
   

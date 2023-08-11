@@ -11,30 +11,29 @@ const getFileSize = async (filePath, callback) => {
   }
 };
 
-const getEntries = async (path) => {
-  return await fs.readdir(path, { withFileTypes: true });
+const getEntries = async (path, callback) => {
+  try {
+    const entries = await fs.readdir(path, { withFileTypes: true });
+    return entries;
+  } catch (error) {
+    typeof callback === 'function' && callback(error);
+    return [];
+  }
 };
 
 const calculateSize = async (path, callback) => {
   let totalSize = 0;
-  try {
-    const entries = await getEntries(path);
 
-    const sizes = await Promise.all(entries.map(async (entry) => {
-      const entryPath = join(path, entry.name);
-      return entry.isDirectory() ? await calculateSize(entryPath, callback) : await getFileSize(entryPath, callback);
-    }));
+  const entries = await getEntries(path, callback);
 
-    totalSize = sizes.reduce((acc, size) => acc + size, 0);
+  const sizes = await Promise.all(entries.map(async (entry) => {
+    const entryPath = join(path, entry.name);
+    return entry.isDirectory() ? await calculateSize(entryPath, callback) : await getFileSize(entryPath, callback);
+  }));
 
-
-  } catch (error) {
-    typeof callback === 'function' && callback(error);
-    return 0;
-  }
+  totalSize = sizes.reduce((acc, size) => acc + size, 0);
 
   return totalSize;
-
 };
 
 
