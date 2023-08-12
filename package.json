@@ -3,6 +3,8 @@
   "version": "1.2.0",
   "description": "Calculates the total size of a folder and its subfolders.",
   "main": "dist/index.js",
+  "types": "dist/types/index.d.ts",
+
   "scripts": {
     "build": "npx tsc",
     "test": "echo \"Error: no test specified\" && exit 1"

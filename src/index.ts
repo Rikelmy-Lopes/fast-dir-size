@@ -43,7 +43,7 @@ const getDirSizeSync = (dirPath: string, callback?: (err: unknown) => void): num
   return calculateTotalDirSize(dirPath, callback);
 };
   
-export = {
+export {
 
   /**
    * Calculates the total size of a folder and its subfolders.
