@@ -2,8 +2,9 @@
   "name": "fast-dir-size",
   "version": "1.2.0",
   "description": "Calculates the total size of a folder and its subfolders.",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
+    "build": "npx tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,6 +24,16 @@
   },
   "homepage": "https://github.com/Rikelmy-Lopes/fast-dir-size#readme",
   "devDependencies": {
-    "eslint": "^8.46.0"
-  }
+    "@types/node": "^20.4.10",
+    "@typescript-eslint/eslint-plugin": "^6.3.0",
+    "@typescript-eslint/parser": "^6.3.0",
+    "eslint": "^8.46.0",
+    "typescript": "^5.1.6"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md",
+    "package.json"
+  ]
 }
