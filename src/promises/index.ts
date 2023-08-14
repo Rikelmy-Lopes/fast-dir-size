@@ -29,7 +29,8 @@ const calculateTotalDirSize = async (dirPath: string, callback?: (err: Error) =>
 
   const sizes = await Promise.all(entries.map(async (entry) => {
     const entryPath = join(dirPath, entry.name);
-    return entry.isDirectory() ? await calculateTotalDirSize(entryPath, callback) : await getFileSize(entryPath, callback);
+    return entry.isDirectory() ? await calculateTotalDirSize(entryPath, callback) : 
+      await getFileSize(entryPath, callback);
   }));
 
   totalSize = sizes.reduce((acc, size) => acc + size, 0);
