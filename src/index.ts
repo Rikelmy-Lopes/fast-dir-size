@@ -43,7 +43,7 @@ const calculateTotalDirSize = (dirPath: string, callback?: (err: Error) => void)
    * @param {function} callback - A callback function that handles potential errors during the folder size calculation.
    * @returns {number} - The total size in bytes.
    * @throws {TypeError} - Throws an error if the provided path is not a string.
-   * @since v1.0.0
+   * @since v1.2.0
    */
 const getDirSizeSync = (dirPath: string, callback?: (err: Error) => void): number => {
   if (typeof dirPath !== 'string') {
