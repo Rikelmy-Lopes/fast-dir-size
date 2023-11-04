@@ -1,39 +1,12 @@
-import { statSync, readdirSync, Dirent } from 'fs';
-import { join } from 'path';
 import getDirSize from './promises/index';
+import { callbackError, options } from './types';
+import { getCallbackError, getRecursiveOption } from './utils/configHandler';
 
+const init = (dirPath: string, options?: options | callbackError , callback?: callbackError): number => {
+  const callbackError = getCallbackError(options, callback);
+  const calculate = getRecursiveOption(options);
 
-const getFileSize = (filePath: string, callback?: (err: Error) => void): number => {
-  try {
-    const fileStats = statSync(filePath);
-    return fileStats.size;
-  } catch (error) {
-    typeof callback === 'function' && callback(error as Error);
-    return 0;
-  }
-};
-
-const getDirEntries = (dirPath: string, callback?: (err: Error) => void): Dirent[] => {
-  try {
-    return readdirSync(dirPath, { withFileTypes: true });
-  } catch (error) {
-    typeof callback === 'function' && callback(error as Error);
-    return [];
-  }
-};
-
-const calculateTotalDirSize = (dirPath: string, callback?: (err: Error) => void): number => {
-  let totalSize = 0;
-  const entries = getDirEntries(dirPath, callback);
-  const len = entries.length;
-
-  for (let i = 0; i < len; i += 1) {
-    const entryPath = join(dirPath, entries[i].name);
-    totalSize += entries[i].isDirectory() ? calculateTotalDirSize(entryPath, callback) : 
-      getFileSize(entryPath, callback);
-  }
-    
-  return totalSize;
+  return calculate(dirPath, callbackError);
 };
 
 
@@ -45,12 +18,12 @@ const calculateTotalDirSize = (dirPath: string, callback?: (err: Error) => void)
    * @throws {TypeError} - Throws an error if the provided path is not a string.
    * @since v1.2.0
    */
-const getDirSizeSync = (dirPath: string, callback?: (err: Error) => void): number => {
+const getDirSizeSync = (dirPath: string, options?: options | callbackError , callback?: callbackError): number => {
   if (typeof dirPath !== 'string') {
     throw new TypeError(`Path must be a string. Received: ${typeof dirPath}`);
   }
 
-  return calculateTotalDirSize(dirPath, callback);
+  return init(dirPath, options, callback);
 };
 
 export {
