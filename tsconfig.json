@@ -1,14 +1,14 @@
 {
-    "compilerOptions": {
-      "target": "ES2022",
-      "module": "CommonJS",
-      "moduleResolution": "Node16",                                  
-      "allowJs": true,
-      "outDir": "./dist/",                          
-      "rootDir": "./src/",
-      "strict": true,         
-      "noImplicitAny": true,
-      "resolveJsonModule": true,
-      "declaration": true,
-    }
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "allowJs": true,
+    "outDir": "./dist/",
+    "rootDir": "./src/",
+    "strict": true,
+    "noImplicitAny": true,
+    "resolveJsonModule": true,
+    "declaration": true,
   }
+}
