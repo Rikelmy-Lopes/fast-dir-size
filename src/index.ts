@@ -13,18 +13,22 @@ const init = (dirPath: string, options?: options | callbackError , callback?: ca
 /**
    * Calculates the total size of a folder and its subfolders.
    * @param {string} dirPath - The path to the folder.
-   * @param {function} callback - A callback function that handles potential errors during the folder size calculation.
+   * @param {object} options - A config object.
+   * @param {Function} callback - A callback function that handles potential errors during the folder size calculation.
    * @returns {number} - The total size in bytes.
    * @throws {TypeError} - Throws an error if the provided path is not a string.
    * @since v1.2.0
    */
-const getDirSizeSync = (dirPath: string, options?: options | callbackError , callback?: callbackError): number => {
+function getDirSizeSync(dirPath: string, callback?: callbackError): number;
+function getDirSizeSync(dirPath: string, options?: options): number;
+function getDirSizeSync(dirPath: string, options?: options, callback?: callbackError): number;
+function getDirSizeSync(dirPath: string, options?: options | callbackError, callback?: callbackError): number {
   if (typeof dirPath !== 'string') {
     throw new TypeError(`Path must be a string. Received: ${typeof dirPath}`);
   }
 
   return init(dirPath, options, callback);
-};
+}
 
 export {
   getDirSize,
