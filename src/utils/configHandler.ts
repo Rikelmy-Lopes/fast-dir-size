@@ -1,6 +1,6 @@
 import { options } from './../types/index';
 import { callbackError } from '../types';
-import { calculateTotalDirSize, calculateTotalDirSizeRecursive } from '../main/folderSize';
+import { calculateTotalDirSize, calculateTotalDirSizeRecursive } from './dirSizeUtils';
 
 const getCallbackError = (options: options | callbackError | undefined, callback: callbackError | undefined): undefined | callbackError => {
   if (typeof options === 'function') {

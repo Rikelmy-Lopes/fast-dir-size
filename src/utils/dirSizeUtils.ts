@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { getDirEntries, getFileSize } from '../utils/files';
+import { getDirEntries, getFileSize } from './fsUtils';
 
 
 const calculateTotalDirSizeRecursive = (dirPath: string, callback?: (err: Error) => void): number => {
