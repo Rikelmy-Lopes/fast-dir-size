@@ -1,6 +1,6 @@
-import { IOptions } from './../types/index';
+import { IOptions } from '../types/index';
 import { ICallbackError } from '../types';
-import { defaultConfig } from '../config/defaultConfig';
+import { defaultConfig } from './defaultConfig';
 
 
 const getCallbackError = (options: IOptions | ICallbackError | undefined, callback: ICallbackError | undefined): undefined | ICallbackError => {

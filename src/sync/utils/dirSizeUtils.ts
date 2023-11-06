@@ -1,7 +1,7 @@
-import { ICallbackError, IOptions } from './../types/index';
+import { ICallbackError, IOptions } from '../../types/index';
 import { join } from 'path';
 import { getDirEntries, getFileSize } from './fsUtils';
-import { handleConfig } from './configHandler';
+import { handleConfig } from '../../config/configHandler';
 
 
 const calculateTotalDirSize = (path: string, options?: IOptions | ICallbackError, callback?: (err: Error) => void): number => {
