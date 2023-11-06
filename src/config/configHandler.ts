@@ -1,6 +1,6 @@
 import { IOptions } from '../types/index';
 import { ICallbackError } from '../types';
-import { defaultConfig } from './defaultConfig';
+import { DEFAULT_CONFIG } from './defaultConfig';
 
 
 const getCallbackError = (options: IOptions | ICallbackError | undefined, callback: ICallbackError | undefined): undefined | ICallbackError => {
@@ -14,10 +14,10 @@ const handleConfig = (options: IOptions | ICallbackError | undefined): IOptions 
   if (typeof options === 'object') {
     validateConfig(options);
     return {
-      recursive: options.recursive ?? defaultConfig.recursive
+      recursive: options.recursive ?? DEFAULT_CONFIG.recursive
     };
   } else {
-    return defaultConfig;
+    return DEFAULT_CONFIG;
   }
 };
 

@@ -1,6 +1,5 @@
 import { IOptions } from '../types';
 
-
-export const defaultConfig: IOptions = Object.freeze({
+export const DEFAULT_CONFIG: IOptions = Object.freeze({
   recursive: true
 });
