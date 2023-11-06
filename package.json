@@ -4,9 +4,8 @@
   "description": "Calculates the total size of a folder and its subfolders.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-
   "scripts": {
-    "build": "npx tsc",
+    "build": "tsc",
     "prepublish": "npx tsc",
     "publish": "npm publish",
     "test": "echo \"Error: no test specified\" && exit 1"

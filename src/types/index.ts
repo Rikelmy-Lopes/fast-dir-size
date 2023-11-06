@@ -1,6 +1,6 @@
 
-export interface options {
+export interface IOptions {
     recursive?: boolean | undefined;
 }
 
-export type callbackError = (err: Error) => void;
+export type ICallbackError = (err: Error) => void;

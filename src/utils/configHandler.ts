@@ -1,32 +1,34 @@
-import { options } from './../types/index';
-import { callbackError } from '../types';
-import { calculateTotalDirSize, calculateTotalDirSizeRecursive } from './dirSizeUtils';
+import { IOptions } from './../types/index';
+import { ICallbackError } from '../types';
+import { defaultConfig } from '../config/defaultConfig';
 
-const getCallbackError = (options: options | callbackError | undefined, callback: callbackError | undefined): undefined | callbackError => {
+
+const getCallbackError = (options: IOptions | ICallbackError | undefined, callback: ICallbackError | undefined): undefined | ICallbackError => {
   if (typeof options === 'function') {
     return options;
   }
   return callback;
 };
 
-
-const getRecursiveOption = (options: options | callbackError | undefined) => {
-  if (!options || typeof options === 'function') {
-    return calculateTotalDirSizeRecursive;
-  }
-
-  if (options.recursive !== undefined && typeof options.recursive !== 'boolean') {
-    throw new TypeError(`Recursive option must be a boolean. Received: ${typeof options.recursive}`);
-  }
-
-  if (options.recursive) {
-    return calculateTotalDirSizeRecursive;
+const handleConfig = (options: IOptions | ICallbackError | undefined): IOptions => {
+  if (typeof options === 'object') {
+    validateConfig(options);
+    return {
+      recursive: options.recursive ?? defaultConfig.recursive
+    };
   } else {
-    return calculateTotalDirSize;
+    return defaultConfig;
   }
 };
 
+const validateConfig = (options: IOptions) => {
+  if (options.recursive !== undefined && typeof options.recursive !== 'boolean') {
+    throw new TypeError(`Recursive must be a boolean. Received: ${typeof options.recursive}`);
+  }
+};
+
+
 export {
   getCallbackError,
-  getRecursiveOption,
+  handleConfig,
 };

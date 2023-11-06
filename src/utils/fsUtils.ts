@@ -10,9 +10,9 @@ const getFileSize = (filePath: string, callback?: (err: Error) => void): number 
   }
 };
   
-const getDirEntries = (dirPath: string, callback?: (err: Error) => void): Dirent[] => {
+const getDirEntries = (path: string, callback?: (err: Error) => void): Dirent[] => {
   try {
-    return readdirSync(dirPath, { withFileTypes: true });
+    return readdirSync(path, { withFileTypes: true });
   } catch (error) {
     typeof callback === 'function' && callback(error as Error);
     return [];
