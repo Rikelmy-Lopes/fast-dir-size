@@ -56,9 +56,11 @@ describe('configHandler', () => {
         });
 
         test('should return an function when called with a function', () => {
-            const callback = parseCallback(() => undefined, undefined);
+            const callback1 = parseCallback(() => undefined, undefined);
+            const callback2 = parseCallback(undefined, () => undefined);
 
-            expect(callback).toBeTruthy()
+            expect(callback1).toBeTruthy();
+            expect(callback2).toBeTruthy();
         });
     });
 });
