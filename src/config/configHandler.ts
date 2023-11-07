@@ -3,16 +3,21 @@ import { ICallbackError } from '../types';
 import { DEFAULT_CONFIG } from './defaultConfig';
 
 
-const getCallbackError = (options: IOptions | ICallbackError | undefined, callback: ICallbackError | undefined): undefined | ICallbackError => {
+const parseCallback = (options: IOptions | ICallbackError | undefined, callback: ICallbackError | undefined): ICallbackError => {
   if (typeof options === 'function') {
     return options;
   }
-  return callback;
+
+  if (callback) {
+    return callback;
+  }
+
+  return function() {return undefined;};
 };
 
-const handleConfig = (options: IOptions | ICallbackError | undefined): IOptions => {
+const parseOptions = (options: IOptions | ICallbackError | undefined): IOptions => {
   if (typeof options === 'object') {
-    validateConfig(options);
+    validateOptions(options);
     return {
       recursive: options.recursive ?? DEFAULT_CONFIG.recursive
     };
@@ -21,7 +26,7 @@ const handleConfig = (options: IOptions | ICallbackError | undefined): IOptions 
   }
 };
 
-const validateConfig = (options: IOptions) => {
+const validateOptions = (options: IOptions) => {
   if (options.recursive !== undefined && typeof options.recursive !== 'boolean') {
     throw new TypeError(`Recursive must be a boolean. Received: ${typeof options.recursive}`);
   }
@@ -29,6 +34,6 @@ const validateConfig = (options: IOptions) => {
 
 
 export {
-  getCallbackError,
-  handleConfig,
+  parseCallback,
+  parseOptions,
 };

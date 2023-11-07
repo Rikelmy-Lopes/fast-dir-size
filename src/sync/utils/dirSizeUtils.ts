@@ -1,18 +1,16 @@
-import { ICallbackError, IOptions } from '../../types/index';
+import { IOptions } from '../../types/index';
 import { join } from 'path';
 import { getDirEntries, getFileSize } from './fsUtils';
-import { handleConfig } from '../../config/configHandler';
 
 
-const calculateTotalDirSize = (path: string, options?: IOptions | ICallbackError, callback?: (err: Error) => void): number => {
+const calculateTotalDirSize = (path: string, options: IOptions, callback: (err: Error) => void): number => {
   let totalSize = 0;
   const entries = getDirEntries(path, callback);
   const len = entries.length;
-  const isRecursive = handleConfig(options).recursive;
   
   for (let i = 0; i < len; i += 1) {
     const entryPath = join(path, entries[i].name);
-    if (isRecursive) {
+    if (options.recursive) {
       totalSize += entries[i].isDirectory() ? calculateTotalDirSize(entryPath, options, callback) : 
         getFileSize(entryPath, callback);
     } else {

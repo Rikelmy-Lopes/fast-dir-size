@@ -1,5 +1,5 @@
 import { ICallbackError, IOptions } from '../types';
-import { getCallbackError } from '../config/configHandler';
+import { parseCallback, parseOptions } from '../config/configHandler';
 import { calculateTotalDirSize } from './utils/dirSizeUtils';
 
 /**
@@ -18,9 +18,10 @@ function getDirSizeSync(path: string, options?: IOptions | ICallbackError, callb
   if (typeof path !== 'string') {
     throw new TypeError(`Path must be a string. Received: ${typeof path}`);
   }
-  const callbackError = getCallbackError(options, callback);
+  const parsedCallback = parseCallback(options, callback);
+  const parsedOptions = parseOptions(options);
 
-  return calculateTotalDirSize(path, options, callbackError);
+  return calculateTotalDirSize(path, parsedOptions, parsedCallback);
 }
 
 export {
