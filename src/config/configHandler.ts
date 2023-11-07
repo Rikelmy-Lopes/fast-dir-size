@@ -3,18 +3,6 @@ import { ICallbackError } from '../types';
 import { DEFAULT_CONFIG } from './defaultConfig';
 
 
-const parseCallback = (options: IOptions | ICallbackError | undefined, callback: ICallbackError | undefined): ICallbackError => {
-  if (typeof options === 'function') {
-    return options;
-  }
-
-  if (callback) {
-    return callback;
-  }
-
-  return function() {return undefined;};
-};
-
 const parseOptions = (options: IOptions | ICallbackError | undefined): IOptions => {
   if (typeof options === 'object') {
     validateOptions(options);
@@ -32,8 +20,21 @@ const validateOptions = (options: IOptions) => {
   }
 };
 
+const parseCallback = (options: IOptions | ICallbackError | undefined, callback: ICallbackError | undefined): ICallbackError => {
+  if (typeof options === 'function') {
+    return options;
+  }
+
+  if (callback) {
+    return callback;
+  }
+
+  return function(err: Error) {return err;};
+};
+
 
 export {
   parseCallback,
   parseOptions,
+  validateOptions,
 };

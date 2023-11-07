@@ -8,7 +8,7 @@
     "build": "tsc",
     "prepublish": "npx tsc",
     "publish": "npm publish",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest"
   },
   "repository": {
     "type": "git",
@@ -31,7 +31,8 @@
     "@typescript-eslint/eslint-plugin": "^6.3.0",
     "@typescript-eslint/parser": "^6.3.0",
     "eslint": "^8.46.0",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "vitest": "^0.34.6"
   },
   "files": [
     "dist",
